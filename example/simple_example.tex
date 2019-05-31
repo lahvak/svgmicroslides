@@ -1,3 +1,7 @@
+% Compile this to a .dvi file (latex, or lualatex --output-format=dvi)
+% Then run dvisvgm on the resulting file, preferably with --font-format=woff
+% switch. Finally, process the resulting svg file with the presfromsvg script
+% included in the script directory.
 \documentclass[dvisvgm]{standalone}
 \usepackage{tikz}
 \usepackage{simplesvgpres}
