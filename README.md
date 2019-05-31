@@ -1,6 +1,4 @@
----
-title: SVGMicroSlides
----
+## SVGMicroSlides
 
 simple svg based slideshows with pgf/tikz.
 
