@@ -1,0 +1,116 @@
+#!/bin/bash
+
+TITLE=$1
+SVGFILE=$2
+
+cat <<EOF
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>$TITLE</title>
+  <style>
+    body {margin: 0px;}
+    div#svgDiv {
+        position: absolute;
+        text-align: center; 
+        padding: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    ul {
+      margin: 0px;
+      padding: 0px;
+      list-style-type: none;
+      width: 100%;
+      text-align: center;
+    } 
+    li {display: inline;}
+    li#pagecounter {width: 14ex;}
+  </style>
+</head>
+
+<body>
+    <div id="svgDiv">
+EOF
+
+cat $SVGFILE
+
+cat <<EOF
+
+    <ul>
+        <li ><a id="Prev" href="#" onclick="prev_page();return false;">&lt;&lt;</a></li>
+        <li id='pagecounter'> </li>
+        <li ><a id="Next" href="#" onclick="next_page();return false;">&gt;&gt;</a></li>
+    </ul>
+    </div>
+
+    <script type="text/javascript">
+    var pagecounter = document.getElementById('pagecounter');
+    var svgdiv = document.getElementById('svgDiv');
+    var svgObject = svgdiv.getElementsByTagName('svg')[0];
+    svgObject.setAttribute("height", "90%");
+    svgObject.setAttribute("width", "100%");
+    svgObject.setAttribute("margin", "0");
+    svgObject.setAttribute("padding", "0");
+
+    var layerList = [...new Set([].concat(...pages))];
+
+    var layers = Object.fromEntries(layerList.map(x => 
+                                                  [x,
+                                                   svgObject.getElementsByClassName(x)
+                                                  ]
+    ));
+
+    var showlayers = function(n) {
+        var plength = pages.length;
+        var page = pageno + 1;
+        if ((n >= 0) && (n < plength)) {
+            for (var l in layers) {
+                for (var el of layers[l]) {
+                    if (pages[n].includes(l)) {
+                        el.setAttributeNS(null, 'visibility', 'visible');
+                    } else {
+                        el.setAttributeNS(null, 'visibility', 'hidden');
+                    }
+                }
+            }
+            pagecounter.textContent = \`Page \${page} of \${plength}\`;
+        }
+    }
+
+    var pageno = 0;
+    showlayers(pageno);
+
+    var next_page = function() {
+        if (pageno < pages.length - 1) {
+            pageno += 1;
+            showlayers(pageno);
+        }
+    }
+    var prev_page = function() {
+        if (pageno > 0) {
+            pageno -= 1;
+            showlayers(pageno);
+        }
+    }
+
+    document.addEventListener('keyup', function (event) {
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        var key = event.key || event.keyCode;
+
+        if (key === ' ' || key === '32' || key === 'ArrowRight' || key === '39') {
+            next_page();
+        } else if (key === 'ArrowLeft' || key === '37') {
+            prev_page();
+        }
+    });
+    </script>
+</body>
+</html>
+EOF

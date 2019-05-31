@@ -1,0 +1,31 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{simplesvgpres}[2019/05/31 Simple svg presentations with TiKZ]
+
+\RequirePackage{tikz}
+
+\tikzset{
+  svgid/.style={
+    execute at begin scope={\special{dvisvgm:raw <g id="#1">}},
+    execute at end scope={\special{dvisvgm:raw </g>}},
+    execute at begin node={\special{dvisvgm:raw <g id="#1">}},
+    execute at end node={\special{dvisvgm:raw </g>}},
+  },
+  svgcls/.style={
+    execute at begin scope={\special{dvisvgm:raw <g class="#1">}},
+    execute at end scope={\special{dvisvgm:raw </g>}},
+    execute at begin node={\special{dvisvgm:raw <g class="#1">}},
+    execute at end node={\special{dvisvgm:raw </g>}},
+  }
+}
+
+\def\definePages#1{%
+    \special{dvisvgm:raw <script type="text/javascript"><![CDATA[var pages = [}
+    \foreach \list in {#1}{
+    \special{dvisvgm:raw [}
+    \foreach \it in \list {\special{dvisvgm:raw "\it",}}
+    \special{dvisvgm:raw ],}
+    }
+    \special{dvisvgm:raw ];]]></script>}
+}
+
+\endinput

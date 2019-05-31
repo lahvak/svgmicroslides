@@ -1,0 +1,40 @@
+\documentclass[dvisvgm]{standalone}
+\usepackage{tikz}
+\usepackage{simplesvgpres}
+\usetikzlibrary{chains, matrix, fit}
+
+\begin{document}
+\begin{tikzpicture}[]
+    \begin{scope}[svgcls=layer1, start chain=calc going base right, 
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (calc-1) [matrix of math nodes, on chain] {3 & (5 + 2)\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer3, continue chain=calc,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \node[on chain] {${}=3(7)$};
+    \end{scope}
+    \begin{scope}[svgcls=layer4, continue chain=calc going {below=of \tikzchainprevious.south west},
+        every on chain/.style={anchor=north west},
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \node[on chain] {${}=21$};
+    \end{scope}
+    \node[fit=(calc-1) (calc-2) (calc-3)] (bbox) {};
+    \begin{scope}[svgcls=layer2]
+        \draw[very thick, red] (calc-1-1-2.south east) rectangle (calc-1-1-2.north
+        west);
+        \node[below=of bbox, align=left] {First we need to add the numbers\\ in the
+            parentheses.};
+    \end{scope}
+    \begin{scope}[svgcls=layer4]
+        \node[below=of bbox, align=left] {Then we just multiply 3 and 7.};
+    \end{scope}
+    \definePages{
+        {layer1},
+        {layer1, layer2},
+        {layer1, layer2, layer3},
+        {layer1, layer3, layer4}}
+\end{tikzpicture}
+\end{document}
