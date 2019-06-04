@@ -1,6 +1,10 @@
 # generated files
 *.html
 *.svg
+*.pdf
+
+# except in dist directory
+!dist/**/*.html
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
