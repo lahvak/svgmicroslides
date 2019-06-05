@@ -1,0 +1,115 @@
+\documentclass[dvisvgm]{standalone}
+\usepackage{tikz}
+\usepackage{simplesvgpres}
+\usetikzlibrary{matrix, fit, decorations.pathreplacing, positioning, calc}
+
+% Linear equation where all numbers are solutions
+
+\begin{document}
+\begin{tikzpicture}[]
+    \begin{scope}[svgcls=layer1,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-1) [matrix of math nodes] {4 & (2x + 3) & {} - x & {}={}
+            & 7x + 12\\};
+    \end{scope}
+    \begin{scope}[
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-2) [matrix of math nodes, below=1ex of line-1-1-4.south,
+        anchor=line-2-1-2.north] 
+        {|[svgcls=layer3]| 8x + 12 - x &|[svgcls=layer5]| {}={}
+            &|[svgcls=layer5]| 7x + 12\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer7,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-3) [matrix of math nodes, below=1ex of line-2-1-2.south,
+        anchor=line-3-1-2.north] 
+        { 7x + 12 & {}={} & 7x + 12\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer9,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-4) [matrix of math nodes, below=1ex of line-3-1-2.south,
+        anchor=line-4-1-2.north] 
+        { |[red]| -12 & \hphantom{{}={}} & |[red]| \hphantom{7x}{} - 12\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer11,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-5) [matrix of math nodes, below=1ex of line-4-1-2.south,
+        anchor=line-5-1-2.north] 
+        { 7x & {}={} & 7x\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer13,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-6) [matrix of math nodes, below=1ex of line-5-1-2.south,
+        anchor=line-6-1-2.north] 
+        {|[red]| -7x & \hphantom{{}={}} & |[red]| -7x\\};
+    \end{scope}
+    \begin{scope}[svgcls=layer15,
+        node distance=0pt,
+        every node/.style={inner xsep=0pt}]
+        \matrix (line-7) [matrix of math nodes, below=1ex of line-6-1-2.south,
+        anchor=line-7-1-2.north] 
+        { 0 & {}={} & 0\\};
+    \end{scope}
+    \node[fit=(line-1) (line-2) (line-3) (line-4) (line-5) (line-6)] (bbox) {};
+    \begin{scope}[svgcls=layer2, decoration=brace]
+        \draw[thick, red] (line-1-1-1.south west) rectangle (line-1-1-1.north east);
+        \draw[red, decorate] ($(line-1-1-2.north west)+(.2em,-.7ex)$) --
+        ($(line-1-1-2.north east)-(.2em,.7ex)$);
+        \draw[red, ->] (line-1-1-1.north) to [out=50, in=130] (line-1-1-2.north);
+        \node[below=of bbox, align=left] {First distribute the $4$ on the left side.};
+    \end{scope}
+    \begin{scope}[svgcls=layer4]
+        \draw[thick, red] (line-1-1-5.south west) rectangle (line-1-1-5.north east);
+        \node[below=of bbox, align=left] {The right side is already simplified
+            as much as possible.};
+    \end{scope}
+    \begin{scope}[svgcls=layer6]
+        \draw[thick, red] (line-2-1-3.south west) rectangle (line-2-1-3.north east);
+        \node[below=of bbox, align=left] {Combine the like terms on the left:\\
+            $8x - x = 7x$.};
+    \end{scope}
+    \begin{scope}[svgcls=layer8a]
+        \node[below=of bbox, align=left] {At this moment we have the exact same
+            expression\\on each side. No matter what $x$ is, these two sides
+            \\will always be the same!};
+    \end{scope}
+    \begin{scope}[svgcls=layer8b]
+        \node[below=of bbox, align=left] {For any possible value of $x$, the
+            equation\\is true.  Any $x$ is a solution!};
+    \end{scope}
+    \begin{scope}[svgcls=layer8c]
+        \node[below=of bbox, align=left] {We can do few more formal steps,
+            though.};
+    \end{scope}
+    \begin{scope}[svgcls=layer8d]
+        \node[below=of bbox, align=left] {Subtract $12$ from both sides.};
+    \end{scope}
+    \begin{scope}[svgcls=layer10]
+        \node[below=of bbox, align=left] {Subtract $7x$ from both sides.};
+    \end{scope}
+    \begin{scope}[svgcls=layer12]
+        \node[below=of bbox, align=left] {The equation becomes $0=0$.  That is
+            a sure indicator\\ that we have infinitely many solutions.};
+    \end{scope}
+    \definePages{
+        {layer1},
+        {layer1, layer2},
+        {layer1, layer2, layer3},
+        {layer1, layer3, layer4, layer5},
+        {layer1, layer3, layer5, layer6},
+        {layer1, layer3, layer5, layer6, layer7},
+        {layer1, layer3, layer5, layer7, layer8a},
+        {layer1, layer3, layer5, layer7, layer8b},
+        {layer1, layer3, layer5, layer7, layer8c},
+        {layer1, layer3, layer5, layer7, layer8d, layer9},
+        {layer1, layer3, layer5, layer7, layer9, layer11},
+        {layer1, layer3, layer5, layer7, layer9, layer11, layer10, layer13},
+        {layer1, layer3, layer5, layer7, layer9, layer11, layer13, layer12, layer15}}
+\end{tikzpicture}
+\end{document}
